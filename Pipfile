@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 djangorestframework = "*"
 django-cors-headers = "*"
+openai = "*"
+django-environ = "*"
 
 [dev-packages]
 
