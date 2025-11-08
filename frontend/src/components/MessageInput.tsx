@@ -34,15 +34,10 @@ const MessageInput: React.FC<MessageInputProps> = ({
         p: 2,
         borderTop: 1,
         borderColor: "divider",
-        bgcolor: "background.paper",
+        backgroundColor: "rgba(255,255,255,0.7)",
         display: "flex",
         gap: 1,
         alignItems: "flex-end",
-        bottom: 0,
-        position: "fixed",
-        width: "100%",
-        maxWidth: "85rem",
-        zIndex: 1000,
       }}
     >
       <TextField

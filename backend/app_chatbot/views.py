@@ -12,6 +12,7 @@ from .serializers import (
 from django.conf import settings
 from openai import OpenAI
 import os
+from .prompts import DEFAULT_SYSTEM_PROMPT
 
 
 # Create your views here.
@@ -88,6 +89,12 @@ class ConversationViewSet(viewsets.ModelViewSet):
             }
             for msg in previous_messages
         ]
+
+        if not messages_for_api or messages_for_api[0]['role'] != 'system':
+            messages_for_api.insert(0, {
+                'role': 'system',
+                'content': DEFAULT_SYSTEM_PROMPT
+            })
         
         try:
             # Call OpenAI API

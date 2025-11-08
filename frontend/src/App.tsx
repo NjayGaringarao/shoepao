@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ThemeProvider,
   CssBaseline,
@@ -17,8 +17,16 @@ import ChatInterface from "./components/ChatInterface";
 import ErrorSnackbar from "./components/ErrorSnackbar";
 import appTheme from "./theme";
 
+const backgroundImages = [
+  "/image_one.png",
+  "/image_two.png",
+  "/image_three.png",
+  "/image_four.png",
+];
+
 const AppContent: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [activeImage, setActiveImage] = useState(0);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const { error, clearError } = useChat();
@@ -27,6 +35,13 @@ const AppContent: React.FC = () => {
     clearError();
   };
 
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveImage((prev) => (prev + 1) % backgroundImages.length);
+    }, 10_000);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <Box
       sx={{
@@ -34,14 +49,51 @@ const AppContent: React.FC = () => {
         height: "100vh",
         overflow: "hidden",
         width: "100vw",
+        padding: "1rem",
+        gap: "1rem",
+        paddingTop: "5rem",
       }}
     >
-      {isMobile && (
-        <AppBar
-          position="fixed"
-          sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        >
-          <Toolbar>
+      {/** Background Images */}
+      <Box
+        aria-hidden
+        sx={{
+          position: "absolute",
+          inset: 0,
+          pointerEvents: "none",
+        }}
+      >
+        {backgroundImages.map((url, index) => (
+          <Box
+            key={url}
+            sx={{
+              position: "absolute",
+              inset: 0,
+              backgroundImage: `url(${url})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              opacity: activeImage === index ? 1 : 0,
+              transition: "opacity 1s ease-in-out",
+            }}
+          />
+        ))}
+        <Box
+          sx={{
+            position: "absolute",
+            inset: 0,
+            backgroundColor: "rgba(0,0,0,0.35)",
+          }}
+        />
+      </Box>
+
+      {/** App Bar */}
+
+      <AppBar
+        position="fixed"
+        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      >
+        <Toolbar>
+          {isMobile && (
             <IconButton
               color="inherit"
               edge="start"
@@ -50,27 +102,32 @@ const AppContent: React.FC = () => {
             >
               <Menu />
             </IconButton>
-            <Typography variant="h6" noWrap component="div">
-              Chatbot
-            </Typography>
-          </Toolbar>
-        </AppBar>
-      )}
+          )}
+          <Typography variant="h6" noWrap component="div">
+            Shoepao Chatbot
+          </Typography>
+        </Toolbar>
+      </AppBar>
+
+      {/** Conversation List */}
       <ConversationList
         open={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
       />
+
+      {/** Chat Interface */}
       <Box
         component="main"
         sx={{
+          position: "relative",
           flexGrow: 1,
           display: "flex",
           flexDirection: "column",
-          height: "100vh",
+          height: "100%",
           width: "100%",
           overflow: "auto",
-          mt: isMobile ? "64px" : 0,
           alignItems: "center",
+          zIndex: 1,
         }}
       >
         <ChatInterface />

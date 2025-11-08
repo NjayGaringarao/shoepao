@@ -65,7 +65,17 @@ const ConversationList: React.FC<ConversationListProps> = ({
   }, [filteredConversations]);
 
   const content = (
-    <Box sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
+    <Box
+      sx={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        backgroundColor: "rgba(255,255,255,0.7)",
+        backdropFilter: "blur(4px)",
+        borderRadius: "0.5rem",
+        pt: isMobile ? "4rem" : "0.5rem",
+      }}
+    >
       <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
         <Button
           fullWidth
@@ -114,6 +124,40 @@ const ConversationList: React.FC<ConversationListProps> = ({
             ))}
           </List>
         )}
+      </Box>
+      <Box
+        sx={{
+          p: 2,
+          borderTop: 1,
+          borderColor: "divider",
+          textAlign: "center",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <Typography variant="caption" color="text.secondary">
+          Developed by <b>Shoepao Team</b>
+        </Typography>
+        <Typography variant="caption" color="text.secondary">
+          <a
+            href="https://www.facebook.com/nigel.garingarao"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "inherit", textDecoration: "underline" }}
+          >
+            Nino Jr Garingarao
+          </a>
+        </Typography>
+        <Typography variant="caption" color="text.secondary">
+          <a
+            href="https://www.facebook.com/justineferrer24#"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "inherit", textDecoration: "underline" }}
+          >
+            Justine Ferrer
+          </a>
+        </Typography>
       </Box>
     </Box>
   );
