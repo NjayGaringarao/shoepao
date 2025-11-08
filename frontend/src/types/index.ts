@@ -10,6 +10,7 @@ export type Conversation = {
   messages: Message[];
   created_at: string;
   updated_at: string;
+  isDraft?: boolean;
 };
 
 export type ChatResponse = {

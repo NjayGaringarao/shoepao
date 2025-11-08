@@ -70,7 +70,11 @@ const ChatInterface: React.FC = () => {
           flexDirection: "column",
           borderRadius: 3,
           overflow: "hidden",
-          backgroundColor: "rgba(255,255,255,0.2)",
+          backgroundColor:
+            messages.length > 0
+              ? "rgba(255,255,255,0.2)"
+              : "rgba(255,255,255,0.7)",
+
           backdropFilter: "blur(10px)",
           border: "1px solid",
           borderColor: "divider",
@@ -98,9 +102,25 @@ const ChatInterface: React.FC = () => {
                 color: "text.secondary",
               }}
             >
-              <Typography variant="body1">
-                No messages yet. Start the conversation!
-              </Typography>
+              {loading ? (
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    mt: "3rem",
+                  }}
+                >
+                  <LoadingIndicator size={64} />
+                  <Typography variant="h4" color="text.secondary">
+                    Starting your conversation…
+                  </Typography>
+                </Box>
+              ) : (
+                <Typography variant="h4" sx={{ mt: "3rem" }}>
+                  No messages yet. Start the conversation!
+                </Typography>
+              )}
             </Box>
           ) : (
             <>

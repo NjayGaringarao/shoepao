@@ -3,6 +3,8 @@ import { createContext, useContext } from "react";
 import type { Conversation, Message } from "../types";
 import { apiService } from "../services/api";
 
+const DRAFT_CONVERSATION_ID = -1;
+
 interface ChatContextType {
   conversations: Conversation[];
   currentConversation: Conversation | null;
@@ -60,22 +62,18 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
 
   // Create a new conversation
   const createNewConversation = useCallback(async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const newConversation = await apiService.createConversation();
-      setCurrentConversation(newConversation);
-      setMessages([]);
-      // Reload conversations list to include the new one
-      await loadConversations();
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Failed to create conversation"
-      );
-    } finally {
-      setLoading(false);
-    }
-  }, [loadConversations]);
+    setError(null);
+    setLoading(false);
+    const draftConversation: Conversation = {
+      id: DRAFT_CONVERSATION_ID,
+      messages: [],
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      isDraft: true,
+    };
+    setCurrentConversation(draftConversation);
+    setMessages([]);
+  }, []);
 
   // Select a conversation and load its messages
   const selectConversation = useCallback(async (id: number) => {
@@ -105,8 +103,16 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
       try {
         setLoading(true);
         setError(null);
+        let activeConversation = currentConversation;
+
+        if (currentConversation.isDraft) {
+          const createdConversation = await apiService.createConversation();
+          activeConversation = createdConversation;
+          setCurrentConversation(createdConversation);
+        }
+
         const response = await apiService.sendMessage(
-          currentConversation.id,
+          activeConversation.id,
           content
         );
 
@@ -118,7 +124,7 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
         ]);
 
         // Update current conversation to refresh updated_at
-        if (response.conversation_id === currentConversation.id) {
+        if (response.conversation_id === activeConversation.id) {
           setCurrentConversation((prev) =>
             prev ? { ...prev, updated_at: new Date().toISOString() } : null
           );

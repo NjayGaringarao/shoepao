@@ -78,10 +78,12 @@ const ConversationItem: React.FC<ConversationItemProps> = ({
           </IconButton>
         }
         sx={{
-          bgcolor: isSelected ? "action.selected" : "transparent",
+          bgcolor: isSelected ? "rgba(255,255,255,0.7)" : "transparent",
           "&:hover": {
             bgcolor: "action.hover",
           },
+          border: isSelected ? "1px solid #9b6e4b" : "none",
+          borderLeft: isSelected ? "10px solid #9b6e4b" : "none",
         }}
       >
         <ListItemButton onClick={() => onSelect(conversation.id)}>
