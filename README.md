@@ -2,6 +2,10 @@
 
 Shoepao is a full-stack AI-powered assistant that helps customers explore the brand’s sneaker-inspired steamed buns. The project combines a Django REST backend with a React + Vite + Material UI frontend to deliver a real-time chat experience.
 
+https://github.com/user-attachments/assets/7edad8fe-88f9-4c04-999b-56a1adcc2877
+
+> View Proper Demo: [https://drive.google.com/file/d/16sx1gOkt8pkEIPTfQU9vP0-4jOXKVVw8/view](https://drive.google.com/file/d/16sx1gOkt8pkEIPTfQU9vP0-4jOXKVVw8/view)
+
 ## Features
 - Conversational interface with assistant responses driven by the backend chatbot service
 - Conversation history with searchable sidebar and draft chat flow
